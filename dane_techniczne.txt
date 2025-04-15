@@ -1,0 +1,5 @@
+
+szerokosc kratki w sudoku 70 pikseli
+szerokosc cienszej kratki 3 piksele
+szerokosc grubszej kratki 6 pikseli
+

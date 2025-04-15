@@ -11,7 +11,7 @@ public class Main {
             @Override
             public void run() {
                 System.out.println("Starting sudoku");
-                new Menu();
+                new GameFrame();
             }
         });
     }

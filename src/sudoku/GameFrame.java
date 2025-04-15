@@ -1,26 +1,44 @@
 package sudoku;
 
-import sudoku.panels.GamePanel;
 
+//import javax.swing.*;
+
+
+import sudoku.panels.MenuPanel;
+
+
+import java.awt.Graphics;
+import java.awt.Image;
 import javax.swing.*;
 
-public class GameFrame extends JFrame {
 
-    public GameFrame(GamePanel gamePanel ) {
 
-        /*
-        super("Sudoku");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+class GameFrame extends JFrame /*implements MouseListener */{
 
-        this.add(gamePanel);
+	JPanel Panel;
+	
 
-        this.setJMenuBar(new JMenuBar());
-        this.setResizable(false);
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+    public GameFrame()
+    {
+    	Panel = new MenuPanel();
+    	
+        this.getContentPane().add(Panel);
+        
+        //add(new MousePanel());
 
-         */
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(725, 680);
+        setLocationRelativeTo(null);
+        setVisible(true);
+
     }
+    
+    
+   
+
+
+
+
+
 
 }

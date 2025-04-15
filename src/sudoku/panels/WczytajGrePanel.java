@@ -1,9 +1,6 @@
 package sudoku.panels;
 
 
-
-import sudoku.panels.*;
-
 import java.util.*;
 import java.awt.Point;
 import java.awt.MouseInfo;
@@ -22,6 +19,10 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
+//import javax.swing.ImageIcon;
+//import javax.swing.JFrame;
+//import javax.swing.JPanel;
+
 
 /*
 
@@ -29,7 +30,7 @@ import java.io.IOException;
 
 
  */
-public class MenuPanel extends JPanel /*implements MouseListener */{
+public class WczytajGrePanel extends JPanel /*implements MouseListener */{
 
     private BufferedImage tloMenu;
 
@@ -45,15 +46,17 @@ public class MenuPanel extends JPanel /*implements MouseListener */{
     
 
 
-    public MenuPanel()
+    public WczytajGrePanel()
     {
-        setPreferredSize(new Dimension(725, 680));
+        setPreferredSize(new Dimension(800, 700));
         setBackground(Color.WHITE);
 
         addMouseListener(new MyMouse(this));
         addMouseMotionListener(new MyMouse(this));
 
         loadImages();
+        
+
     }
 
 
@@ -62,11 +65,11 @@ public class MenuPanel extends JPanel /*implements MouseListener */{
     {
         super.paintComponents(g);
 
-        g.drawImage(this.tloMenu, -40, -80, this);
+        g.drawImage(this.tloMenu, 0, -80, this);
 
-        
+
         for (int i=0; i<MenuButtonsImg.size(); i++) {
-            g.drawImage(this.MenuButtonsImg.get(i),225, this.y0[i]  , this); //265
+            g.drawImage(this.MenuButtonsImg.get(i),265, this.y0[i]  , this);
         }
 
         /*
@@ -89,7 +92,7 @@ public class MenuPanel extends JPanel /*implements MouseListener */{
     public void loadImages() {
 
         try {
-            String source = "/home/rybex/eclipse-workspace/Sudoku/src/sudoku/assets/menu/";
+            String source = "/home/rybex/IdeaProjects/Sudoku/src/sudoku/assets/";
             this.tloMenu = ImageIO.read(new File(source+"tloMenu.png"));
 
             for (int i = 0; i < this.ButtonNames.length; i++) {
@@ -120,10 +123,10 @@ public class MenuPanel extends JPanel /*implements MouseListener */{
 
 
     private class MyMouse extends MouseAdapter {
-        MenuPanel outer;
+    	WczytajGrePanel outer;
 
 
-        public MyMouse(MenuPanel outer) {
+        public MyMouse(WczytajGrePanel outer) {
             this.outer = outer;
         }
 
@@ -141,30 +144,24 @@ public class MenuPanel extends JPanel /*implements MouseListener */{
 
           String opcja = "";
             for(int i=0;i<MenuButtonsImg.size();i++) {
-                if ( (230 < x && x < 500)  && (y0[i]  < y && y < y0[i]+ 95) ) {
+                if ( (270 < x && x < 540)  && (y0[i]  < y && y < y0[i]+ 95) ) {
                     opcja =  ButtonNames[i];
                     break;
                 }
             }
-            
-            JFrame GameFrame;
 
             switch (opcja) {
                 case "kontynuuj.png":
                     System.out.println("Kontynuuj");
                     this.outer.setVisible(false);
-                    GameFrame = (JFrame) SwingUtilities.getWindowAncestor(this.outer);
+                    JFrame MenuFrame = (JFrame) SwingUtilities.getWindowAncestor(this.outer);
                     
-                    GameFrame.remove(this.outer);
-                    GameFrame.getContentPane().add(new MenuPanel());
+                    MenuFrame.remove(this.outer);
+                    MenuFrame.getContentPane().add(new MenuPanel());
                     
                     break;
                 case "nowaGra.png":
                     System.out.println("NowaGra");
-                    this.outer.setVisible(false);
-                    GameFrame = (JFrame) SwingUtilities.getWindowAncestor(this.outer);
-                    GameFrame.remove(this.outer);
-                    GameFrame.getContentPane().add(new NowaGraPanel());
                     //this.outer.option = Options.nowaGra;
                     break;
                 case "wczytajGre.png":
@@ -190,11 +187,11 @@ public class MenuPanel extends JPanel /*implements MouseListener */{
             Graphics g = getGraphics();
 
             for(int i=0;i<MenuButtonsImg.size();i++) {
-                if ( (230 < x && x < 500)  && (y0[i]  < y && y < y0[i]+ 95) ) {
-                    g.drawImage(this.outer.MenuButtons2Img.get(i), 225, y0[i] , this.outer);
+                if ( (270 < x && x < 540)  && (y0[i]  < y && y < y0[i]+ 95) ) {
+                    g.drawImage(this.outer.MenuButtons2Img.get(i), 265, y0[i] , this.outer);
                     //System.out.println(this.outer.ButtonNames2[i]);
                 } else {
-                    g.drawImage(this.outer.MenuButtonsImg.get(i), 225, y0[i], this.outer);
+                    g.drawImage(this.outer.MenuButtonsImg.get(i), 265, y0[i], this.outer);
                     //System.out.println(this.outer.ButtonNames2[i]);
                 }
             }
@@ -203,10 +200,8 @@ public class MenuPanel extends JPanel /*implements MouseListener */{
         }
         
         
+        
     }
-    
-	    
-	    
 
 
 
