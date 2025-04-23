@@ -63,7 +63,7 @@ public class MenuPanel extends JPanel /*implements MouseListener */{
         super.paintComponents(g);
 
         g.drawImage(this.tloMenu, -40, -80, this);
-
+        
         
         for (int i=0; i<MenuButtonsImg.size(); i++) {
             g.drawImage(this.MenuButtonsImg.get(i),225, this.y0[i]  , this); //265
@@ -82,8 +82,16 @@ public class MenuPanel extends JPanel /*implements MouseListener */{
          */
 
 
-
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
     public void loadImages() {

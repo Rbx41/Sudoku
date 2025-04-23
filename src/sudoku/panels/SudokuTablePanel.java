@@ -1,5 +1,7 @@
 package sudoku.panels;
 
+
+import sudoku.Point;
 import sudoku.Highlighter;
 import sudoku.SudokuGenerator;
 import sudoku.panels.*;
@@ -22,7 +24,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
-
+import sudoku.ImageToDraw;
 
 
 
@@ -40,17 +42,20 @@ public class SudokuTablePanel extends JPanel /*implements MouseListener */{
 	private int height;
 	
     private BufferedImage plansza;
+    private BufferedImage ramka;
+    private BufferedImage kratka;
+    private BufferedImage tlo_planszy;
     
     
-    List<BufferedImage>cyfryImg= new ArrayList<>();
+    private List<BufferedImage>cyfryImg;
     private String[] cyfryNames = { "1.png", "2.png", "3.png", "4.png", "5.png","6.png","7.png", "8.png", "9.png"};
     //private BufferedImage cyfry[] = {}
     
-    int numbersTable[][];
+    private int numbersTable[][];
     
-        
-    int difficultyLevel;
+    private int difficultyLevel;
     
+    private List<ImageToDraw>drawers;
     
     // lewy gorny rog 97 15
     
@@ -71,13 +76,24 @@ public class SudokuTablePanel extends JPanel /*implements MouseListener */{
 
         addMouseListener(new MyMouse(this));
         addMouseMotionListener(new MyMouse(this));
+        
+        
 
+        cyfryImg = new ArrayList<>();
         
         loadImages();
         SudokuGenerator generator = new SudokuGenerator(difficultyLevel);
         numbersTable = generator.getTable();
         
+        drawers = new ArrayList<>();
         
+        
+        drawers.add(new ImageToDraw( tlo_planszy,new Point(80,0) ));
+        AddDigitsToDrawer();
+        drawers.add(new ImageToDraw( kratka,new Point(83,10) ));
+        drawers.add(new ImageToDraw( ramka,new Point(80,0) ));
+        
+        //drawers.add(new ImageToDraw( kratka,new Point(80,0) ));
         
         
     }
@@ -90,14 +106,17 @@ public class SudokuTablePanel extends JPanel /*implements MouseListener */{
 
         g.drawRect(0, 0, width, height);
         g.setColor(Color.WHITE);  
-        g.fillRect(0,0,width,height);  
-        g.drawImage(this.plansza, 80, 0, this);
+        g.fillRect(0,0,width,height);
+        
+        //g.drawImage(this.plansza, 80, 0, this);
                 
-        drawDigits(g);
-    	 
+        //drawDigits(g);
+    	
+        for (int i = 0; i < drawers.size(); i++) {
+        	drawers.get(i).Draw(g, this);
+        }
     	
        
-
 
     }
 
@@ -107,7 +126,10 @@ public class SudokuTablePanel extends JPanel /*implements MouseListener */{
         try {
         	String source = "/home/rybex/eclipse-workspace/Sudoku/src/sudoku/assets/plansza/";
             this.plansza = ImageIO.read(new File(source+"plansza.png"));
-
+            this.ramka = ImageIO.read(new File(source+"ramka.png"));
+            this.kratka = ImageIO.read(new File(source+"kratka.png"));
+            this.tlo_planszy = ImageIO.read(new File(source+"tlo_planszy.png"));
+            
             
             //this.cyfryImg.add(ImageIO.read(new File(source+Integer.toString(1)+".png")));
            
@@ -152,6 +174,7 @@ public class SudokuTablePanel extends JPanel /*implements MouseListener */{
             // create a random color
           System.out.println("Mouse clicked");
 
+          
           Point point = getMousePosition();
           int x=(int) point.getX();
           int y=(int) point.getY();
@@ -166,7 +189,22 @@ public class SudokuTablePanel extends JPanel /*implements MouseListener */{
         		  if (x >= xGrid &&  x <= xGrid+70) {
         			  if (y >= yGrid &&  y <= yGrid+70) {
         				  Highlighter highlighter = new Highlighter(x,y);
-        				  //System.out.println("Jest w kratce x "+ x+ " y "+ y);
+        				  
+        				  drawers.clear();
+        				  
+        				  drawers.add(new ImageToDraw( tlo_planszy,new Point(80,0) ));
+        			      
+        				  drawers.add(highlighter.getSquareImgToDraw());
+        				  drawers.add(highlighter.getHorizontalImgToDraw());
+        				  drawers.add(highlighter.getVerticalImgToDraw());
+        				  
+        				  AddDigitsToDrawer();
+        			      drawers.add(new ImageToDraw( kratka,new Point(83,10) ));
+        			      drawers.add(new ImageToDraw( ramka,new Point(80,0) ));
+        				  
+        			      repaint();
+        				  
+        				  //System.out.println("Jest w kratce x "+ xGrid+ " y "+ yGrid);
         			  }
         		  }
         		  xGrid += 70;
@@ -185,7 +223,7 @@ public class SudokuTablePanel extends JPanel /*implements MouseListener */{
     
     public void drawDigits(Graphics g) {
     	
-    	 int x = 0;
+    	int x = 0;
      	int y = 0;
          
          
@@ -203,6 +241,38 @@ public class SudokuTablePanel extends JPanel /*implements MouseListener */{
               }
               y += 70;
           }
+    	
+    }
+    
+    public void AddDigitsToDrawer() {
+    	
+    	
+    	int x = 0;
+     	int y = 0;
+         
+         
+     	 for (int[] row : numbersTable) {
+     		 x = 0;
+              for (int cell : row) {
+             	 
+             	 if (cell != 0) {
+             		 BufferedImage digit = cyfryImg.get(cell-1);
+             		 Point p = new Point(106+x, 19+y);
+             		 
+             		 ImageToDraw imtd = new ImageToDraw(digit,p);
+             		 drawers.add(imtd);
+             		 
+             		 
+             	 }
+             	 //System.out.println(cell);
+             	 x+=70;
+              }
+              y += 70;
+          }
+    	
+    	
+    	
+    	
     	
     }
     
